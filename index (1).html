@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>20代のための適職診断 | 向いてる仕事がわかる</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#12162A;
+    --bg-panel:#1B2140;
+    --bg-panel-2:#232A4D;
+    --brass:#C9A24D;
+    --brass-soft:#E3C989;
+    --verdigris:#5C9E8F;
+    --ink:#F1EDE1;
+    --ink-dim:#B9B6C9;
+    --line:rgba(233,214,166,0.18);
+
+    --font-display:'Zen Old Mincho', serif;
+    --font-body:'Zen Kaku Gothic New', sans-serif;
+    --font-mono:'Space Mono', monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(92,158,143,0.10), transparent 55%),
+      radial-gradient(ellipse at 85% 110%, rgba(201,162,77,0.08), transparent 50%),
+      var(--bg-deep);
+    color:var(--ink);
+    font-family:var(--font-body);
+    min-height:100vh;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{
+    max-width:640px;
+    margin:0 auto;
+    padding:32px 18px 72px;
+    min-height:100vh;
+  }
+
+  @media (min-width:641px){
+    .stage{ padding:56px 24px 96px; }
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.22em;
+    color:var(--verdigris);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+
+  h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:clamp(26px, 6vw, 38px);
+    line-height:1.55;
+    color:var(--ink);
+    margin-bottom:18px;
+  }
+
+  h1 em{
+    font-style:normal;
+    color:var(--brass-soft);
+    border-bottom:1px solid var(--brass);
+  }
+
+  p.lead{
+    color:var(--ink-dim);
+    font-size:15.5px;
+    margin-bottom:8px;
+  }
+
+  .panel{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:24px 20px;
+    margin-top:8px;
+  }
+
+  @media (min-width:641px){
+    .panel{ padding:32px 28px; }
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:15px;
+    color:var(--bg-deep);
+    background:linear-gradient(135deg, var(--brass-soft), var(--brass));
+    border:none;
+    padding:14px 26px;
+    cursor:pointer;
+    border-radius:2px;
+    letter-spacing:0.02em;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); box-shadow:0 6px 18px rgba(201,162,77,0.25); }
+  .btn:focus-visible{ outline:2px solid var(--verdigris); outline-offset:3px; }
+
+  .btn-ghost{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink);
+  }
+  .btn-ghost:hover{ border-color:var(--brass); }
+
+  .btn-wide{ width:100%; margin-top:10px; }
+
+  .progress-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom:14px;
+    font-family:var(--font-mono);
+    font-size:11px;
+    color:var(--ink-dim);
+    letter-spacing:0.05em;
+  }
+  .progress-track{
+    height:1px;
+    background:var(--line);
+    margin-bottom:36px;
+  }
+  .progress-fill{
+    height:1px;
+    background:var(--brass);
+    transition:width 0.4s ease;
+  }
+
+  .question{
+    font-family:var(--font-display);
+    font-size:20px;
+    line-height:1.7;
+    margin-bottom:26px;
+  }
+
+  .choice{
+    display:block;
+    width:100%;
+    text-align:left;
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    color:var(--ink);
+    padding:16px 18px;
+    margin-bottom:12px;
+    font-family:var(--font-body);
+    font-size:14.5px;
+    cursor:pointer;
+    border-radius:2px;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .choice:hover{ border-color:var(--brass); background:var(--bg-panel); }
+  .choice:focus-visible{ outline:2px solid var(--verdigris); outline-offset:2px; }
+
+  .type-eyebrow{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.2em;
+    color:var(--ink-dim);
+    margin-bottom:6px;
+  }
+
+  .type-name{
+    font-family:var(--font-display);
+    font-size:clamp(24px, 6vw, 30px);
+    color:var(--brass-soft);
+    margin-bottom:18px;
+  }
+
+  .result-copy p{ margin-bottom:14px; color:var(--ink); font-size:15px; }
+
+  .jobs-block{ margin-top:22px; }
+  .jobs-title{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:0.1em;
+    color:var(--verdigris);
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .jobs-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .job-chip{
+    font-family:var(--font-body);
+    font-size:13px;
+    color:var(--ink);
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    padding:7px 14px;
+    border-radius:2px;
+  }
+
+  .strengths-list{ list-style:none; }
+  .strengths-list li{
+    font-size:14px;
+    color:var(--ink);
+    padding:8px 0 8px 20px;
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .strengths-list li:last-child{ border-bottom:none; }
+  .strengths-list li::before{
+    content:'';
+    position:absolute;
+    left:0; top:16px;
+    width:6px; height:6px;
+    background:var(--brass);
+    border-radius:50%;
+  }
+
+  .divider{
+    border:none;
+    border-top:1px solid var(--line);
+    margin:28px 0;
+  }
+
+  .cta-block{
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    padding:24px;
+    border-radius:2px;
+  }
+  .cta-title{
+    font-family:var(--font-display);
+    font-size:17px;
+    margin-bottom:8px;
+    color:var(--ink);
+  }
+  .cta-sub{ color:var(--ink-dim); font-size:13.5px; margin-bottom:18px; }
+
+  .disclosure{
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    color:var(--ink-dim);
+    opacity:0.75;
+    margin-top:22px;
+    letter-spacing:0.02em;
+  }
+
+  .hidden{ display:none; }
+
+  footer{
+    text-align:center;
+    margin-top:48px;
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    color:var(--ink-dim);
+    opacity:0.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- ============ INTRO ============ -->
+  <section id="screen-intro">
+    <div class="eyebrow">20代のための適職診断</div>
+    <h1>「本当はどんな仕事が<br>向いてるんだろう」<br><em>そう思ったこと、ありませんか。</em></h1>
+    <p class="lead">同期はもう活躍してるのに、自分だけ迷っている気がする。20代でその感覚は、決して珍しくありません。</p>
+    <p class="lead">3分・16の質問に「そう思う〜思わない」の4段階で答えるだけで、あなたの強みと向いている仕事がわかります。</p>
+    <button class="btn btn-wide" onclick="startQuiz()">3分で診断してみる →</button>
+  </section>
+
+  <!-- ============ QUIZ ============ -->
+  <section id="screen-quiz" class="hidden">
+    <div class="progress-row">
+      <span id="qCounter">Q1 / 12</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+    <div class="question" id="qText"></div>
+    <div id="qChoices"></div>
+  </section>
+
+  <!-- ============ RESULT ============ -->
+  <section id="screen-result" class="hidden">
+    <div class="panel">
+      <div class="type-eyebrow" id="resultKicker">診断結果</div>
+      <div class="type-name" id="resultName"></div>
+      <div class="result-copy" id="resultCopy"></div>
+
+      <div class="jobs-block">
+        <div class="jobs-title">あなたの強み</div>
+        <ul class="strengths-list" id="resultStrengths"></ul>
+      </div>
+
+      <div class="jobs-block">
+        <div class="jobs-title">向いている仕事の例</div>
+        <div class="jobs-chips" id="resultJobs"></div>
+      </div>
+
+      <div class="jobs-block" id="subTypeBlock">
+        <div class="jobs-title">もう一つの持ち味</div>
+        <p class="result-copy" id="resultSubType" style="margin:0;"></p>
+      </div>
+
+      <hr class="divider">
+
+      <div class="cta-block">
+        <div class="cta-title" id="ctaTitle">さらに深掘りしたい方へ</div>
+        <p class="cta-sub" id="ctaSub"></p>
+        <a class="btn btn-wide" id="ctaLink" href="https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75" rel="noopener sponsored">無料相談を予約する →</a>
+      </div>
+
+      <p class="disclosure">
+        本診断は回答傾向に基づく簡易的な目安であり、適性を保証するものではありません。<br>
+        本ページ内の相談リンクにはPR(広告)が含まれます。
+      </p>
+    </div>
+
+    <div style="display:flex; gap:10px; margin-top:20px;">
+      <button class="btn btn-ghost" style="flex:1;" onclick="shareResult()">Xで結果をシェア →</button>
+      <button class="btn btn-ghost" style="flex:1;" onclick="resetQuiz()">もう一度診断する</button>
+    </div>
+  </section>
+
+  <footer>tenshoku-shindan / prototype build</footer>
+</div>
+
+<script>
+/* =========================================================
+   設定エリア — Claude Codeプロジェクトに移す際はここを編集
+   ========================================================= */
+
+const TYPES = {
+  toudai: { name:'安定基盤タイプ',
+    kicker:'支える・信頼を積む',
+    copy:[
+      'あなたは、大きく動くより今の場所で信頼を積み上げていくタイプです。',
+      '任されたことを丁寧にやり切る姿勢が、周りから見て一番の安心材料になっています。',
+      '離職率が低く、役割が明確な環境でこそ力を発揮できます。',
+      '今の力を発揮しきれる環境に変えるだけで、評価はまだ大きく伸びます。'
+    ],
+    strengths:['一度任されたことを最後までやり切る責任感','周囲を不安にさせない安定した仕事ぶり','ルールや型を早く正確に覚える吸収力'],
+    jobs:['一般事務・アシスタント','経理アシスタント','カスタマーサポート','労務・総務(未経験可)'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+
+  senchou: { name:'裁量志向タイプ',
+    kicker:'決めて進める',
+    copy:[
+      'あなたは、任されて自分で決めることにやりがいを感じるタイプです。',
+      '指示待ちの時間そのものが、あなたにとってはもったいなく感じられるはずです。',
+      '権限委譲が進んだ、成果で評価される環境が向いています。',
+      '裁量を任せてくれる環境さえ見つかれば、決断力はそのまま成果に直結します。'
+    ],
+    strengths:['自分で判断して動き出すスピード感','結果に対する当事者意識の強さ','曖昧な状況でも決断できる胆力'],
+    jobs:['成長企業の若手ポジション','裁量の大きい法人営業','代理店の若手責任者候補','成果報酬型の営業職'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+
+  kaitaku: { name:'挑戦志向タイプ',
+    kicker:'未経験領域に強い',
+    copy:[
+      'あなたは、未経験でも新しい領域に飛び込む挑戦心を持つタイプです。',
+      '同じことの繰り返しより、答えのない課題の方にむしろ燃えるタイプです。',
+      '変化のスピードが速く、若手にも裁量が渡る環境で伸びます。',
+      '挑戦できる場に身を置いた瞬間、キャリアの伸びしろが一気に開きます。'
+    ],
+    strengths:['未経験でも臆せず飛び込むフットワークの軽さ','変化を前向きに捉えられる柔軟さ','失敗しても次に切り替える立ち直りの早さ'],
+    jobs:['スタートアップの若手メンバー','IT/Web業界への未経験ポテンシャル採用','新規事業のアシスタント','第二新卒枠での異業種転職'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+
+  wataridori: { name:'変化適応タイプ',
+    kicker:'環境を変えて伸びる',
+    copy:[
+      'あなたは、環境や関わる人が変わることを楽しめる適応力の高いタイプです。',
+      '一つの場所に留まり続けるより、いろんな現場や人と関わる方が力を発揮できます。',
+      '案件・現場単位で動く、人との接点が多い環境が向いています。',
+      '環境を選び続けられる柔軟さは、変化の多い今の労働市場でそのまま強みになります。'
+    ],
+    strengths:['初対面の人ともすぐに関係を築けるコミュニケーション力','環境の変化にストレスを感じにくい適応力','複数の物事を同時に動かすマルチタスク耐性'],
+    jobs:['人材業界の若手コーディネーター','法人営業','複数クライアントを担当するアシスタント','販売・接客からのキャリアチェンジ'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+
+  banso: { name:'サポート志向タイプ',
+    kicker:'チームを機能させる',
+    copy:[
+      'あなたは、誰かを支えることに自然とやりがいを感じるタイプです。',
+      '自分の成果より、誰かがうまくいった瞬間の方が嬉しいと感じるはずです。',
+      'チーム連携や育成・サポート体制を大事にする環境で力を発揮します。',
+      'その力を正当に評価してくれる場所に移るだけで、貢献はもっと目に見える形になります。'
+    ],
+    strengths:['相手の状況を汲み取る気配りの細やかさ','チームの空気を和らげる調整力','誰かの成功を素直に喜べる協調性'],
+    jobs:['人事アシスタント','カスタマーサポート','保育・介護・教育系のサポート職','庶務・アシスタント職'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+
+  ikari: { name:'定着志向タイプ',
+    kicker:'腰を据えて力を出す',
+    copy:[
+      'あなたは、一つの場所に腰を据えてコツコツ積み上げるタイプです。',
+      '流行りより、一度決めた場所で力を発揮することの方が性に合っています。',
+      '定着率が高く、ルールや型が明確な環境が向いています。',
+      '腰を据えて力を発揮できる場所さえ間違えなければ、安定感はキャリアの一番の武器になります。'
+    ],
+    strengths:['地道な積み重ねを苦にしない継続力','一つの職場・業務を深く理解していく丁寧さ','周囲に安心感を与える落ち着き'],
+    jobs:['経理・総務の一般職','事務職(未経験可)','製造・品質管理','公務員・団体職員'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+
+  shokunin: { name:'専門特化タイプ',
+    kicker:'一点を極める',
+    copy:[
+      'あなたは、一つのことをとことん極めたいタイプです。',
+      '広く浅くより、専門知識やスキルを深めることに自然と惹かれます。',
+      '専門職としてのキャリアパスが明確な環境で評価されやすくなります。',
+      '専門性を正しく評価する場に移れば、積み重ねは市場価値としてはっきり返ってきます。'
+    ],
+    strengths:['一つの物事を深く掘り下げる集中力','地道な学習・訓練を続けられる粘り強さ','専門性を積み上げる継続的な向上心'],
+    jobs:['未経験からのエンジニア職','Webデザイナー','経理(資格取得支援あり)','専門スクール卒からの技術職'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+
+  kazemachi: { name:'見極め志向タイプ',
+    kicker:'動く前に判断する',
+    copy:[
+      'あなたは、動く前にしっかり見極める慎重さを持つタイプです。',
+      '勢いで動くより、納得できるまで情報を集めてから動きたいタイプです。',
+      '意思決定に時間をかける文化、データや根拠を重視する環境が向いています。',
+      '見極める力があるからこそ、動くと決めた時の転職はほぼ外れません。'
+    ],
+    strengths:['感情に流されず状況を分析する冷静さ','リスクを事前に洗い出す慎重さ','根拠を持って判断する論理性'],
+    jobs:['事務系総合職','企画アシスタント','リサーチ・分析アシスタント','管理部門の一般職'],
+    aff:{ name:'20代向け無料転職相談', url:'https://px.a8.net/svt/ejp?a8mat=4B81T0+Z4LGY+5X7K+5YZ75' } },
+};
+
+// 各質問は2つのタイプを対比させる形式。選んだ側に+1点。
+const LEVELS = [
+  { label:'そう思う', val:3 },
+  { label:'ややそう思う', val:2 },
+  { label:'あまりそう思わない', val:1 },
+  { label:'そう思わない', val:0 },
+];
+
+const QUESTIONS = [
+  { text:'決まったルールや型がある仕事の方が、安心して取り組める', type:'toudai' },
+  { text:'大きな変化より、慣れた環境でじっくり働きたい', type:'toudai' },
+  { text:'仕事の進め方は、指示されるより自分で決めたい', type:'senchou' },
+  { text:'指示を待つより、自分から動いて任されたい', type:'senchou' },
+  { text:'未経験の分野でも、面白そうならまず挑戦したい', type:'kaitaku' },
+  { text:'変化の多い環境の方が、やる気が出る', type:'kaitaku' },
+  { text:'同じ環境よりも、色々な現場や人と関わる仕事がしたい', type:'wataridori' },
+  { text:'環境が変わることに、あまり抵抗はない', type:'wataridori' },
+  { text:'自分の成果より、誰かの役に立てることの方が嬉しい', type:'banso' },
+  { text:'チームの中で、誰かを支える役割が自分に合っている', type:'banso' },
+  { text:'一つの会社で長く腰を据えて働きたい', type:'ikari' },
+  { text:'落ち着いて同じ仕事を積み重ねていく方が性に合う', type:'ikari' },
+  { text:'広く浅くより、一つのことを深く極めたい', type:'shokunin' },
+  { text:'専門知識やスキルを磨くことに、やりがいを感じる', type:'shokunin' },
+  { text:'物事を決める前に、じっくり情報を集めたい', type:'kazemachi' },
+  { text:'勢いで動くより、納得してから動きたい方だ', type:'kazemachi' },
+];
+
+/* =========================================================
+   ロジック本体
+   ========================================================= */
+
+let current = 0;
+let score = {};
+let currentResultKey = null;
+
+function resetScore(){
+  score = {};
+  Object.keys(TYPES).forEach(k=>{ score[k] = 0; });
+}
+
+function startQuiz(){
+  document.getElementById('screen-intro').classList.add('hidden');
+  document.getElementById('screen-quiz').classList.remove('hidden');
+  current = 0; resetScore();
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  document.getElementById('qCounter').textContent = `Q${current+1} / ${QUESTIONS.length}`;
+  document.getElementById('progressFill').style.width = `${(current/QUESTIONS.length)*100}%`;
+  document.getElementById('qText').textContent = q.text;
+
+  const box = document.getElementById('qChoices');
+  box.innerHTML = '';
+  LEVELS.forEach(level=>{
+    const btn = document.createElement('button');
+    btn.className = 'choice';
+    btn.textContent = level.label;
+    btn.onclick = ()=>answer(q, level);
+    box.appendChild(btn);
+  });
+}
+
+function answer(question, level){
+  score[question.type] += level.val;
+  current++;
+  if(current < QUESTIONS.length){
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function rankedTypes(){
+  return Object.keys(TYPES)
+    .map(k=>({ key:k, score:score[k] }))
+    .sort((a,b)=> b.score - a.score);
+}
+
+function showResult(){
+  const ranked = rankedTypes();
+  const key = ranked[0].key;
+  const type = TYPES[key];
+  const subKey = ranked[1].key;
+  const subType = TYPES[subKey];
+  currentResultKey = key;
+
+  document.getElementById('screen-quiz').classList.add('hidden');
+  document.getElementById('screen-result').classList.remove('hidden');
+
+  document.getElementById('resultName').textContent = type.name;
+  document.getElementById('resultKicker').textContent = type.kicker;
+
+  const copyBox = document.getElementById('resultCopy');
+  copyBox.innerHTML = type.copy.map(p=>`<p>${p}</p>`).join('');
+
+  const strengthsBox = document.getElementById('resultStrengths');
+  strengthsBox.innerHTML = type.strengths.map(s=>`<li>${s}</li>`).join('');
+
+  const jobsBox = document.getElementById('resultJobs');
+  jobsBox.innerHTML = type.jobs.map(j=>`<span class="job-chip">${j}</span>`).join('');
+
+  document.getElementById('resultSubType').textContent =
+    `メインの傾向は${type.name}でしたが、「${subType.kicker}」という${subType.name}の持ち味も併せ持っています。両方の強みを意識して仕事を選ぶと、選択肢がさらに広がります。`;
+
+  document.getElementById('ctaTitle').textContent = '20代の方は無料相談へ';
+  document.getElementById('ctaSub').textContent =
+    `${type.name}のあなたに向いている働き方を、無料相談でさらに深掘りできます。`;
+  document.getElementById('ctaLink').href = type.aff.url;
+}
+
+function shareResult(){
+  if(!currentResultKey) return;
+  const type = TYPES[currentResultKey];
+  const text = `【診断結果】私は「${type.name}」でした。\n${type.kicker}\n\nあなたの向いてる仕事、診断してみませんか？`;
+  const url = location.href.split('#')[0];
+  const intent = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+  window.open(intent, '_blank', 'noopener');
+}
+
+function resetQuiz(){
+  document.getElementById('screen-result').classList.add('hidden');
+  document.getElementById('screen-intro').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
